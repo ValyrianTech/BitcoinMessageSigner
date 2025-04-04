@@ -26,8 +26,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => SettingsPageModel());
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -155,8 +153,15 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                 (privateKeysIndex) {
                               final privateKeysItem =
                                   privateKeys[privateKeysIndex];
-                              return Container(
-                                  width: 100, height: 100, color: Colors.green);
+                              return Text(
+                                privateKeysIndex.toString(),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Inter',
+                                      letterSpacing: 0.0,
+                                    ),
+                              );
                             }),
                           );
                         },

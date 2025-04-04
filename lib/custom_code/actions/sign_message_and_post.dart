@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:dartsv/src/message.dart';
 import 'package:dartsv/src/privatekey.dart';
 import 'package:dartsv/src/networks.dart';
 
@@ -31,7 +32,7 @@ Future signMessageAndPost(
 
   Map<String, String> headers = {"Content-type": "application/json"};
 
-  Response response = await post(url,
+  Response response = await post(Uri.parse(url),
       headers: headers,
       body: json.encode(signedMessage)); // check the status code for the result
   int statusCode = response

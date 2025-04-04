@@ -77,7 +77,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         onPressed: () {
                           print('ScanQRButton pressed ...');
                         },
-                        text: 'Scan QR code',
+                        text: 'Scan QR',
                         options: FFButtonOptions(
                           height: 40.0,
                           padding: EdgeInsetsDirectional.fromSTEB(
@@ -97,9 +97,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ),
                       FFButtonWidget(
                         onPressed: () async {
-                          context.pushNamed(SettingsPageWidget.routeName);
+                          context.pushNamed(AdressesPageWidget.routeName);
                         },
-                        text: 'Settings',
+                        text: 'Addresses',
                         options: FFButtonOptions(
                           height: 40.0,
                           padding: EdgeInsetsDirectional.fromSTEB(

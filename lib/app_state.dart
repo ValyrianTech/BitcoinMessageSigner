@@ -19,6 +19,13 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _privateKeys = prefs.getStringList('ff_privateKeys') ?? _privateKeys;
     });
+    _safeInit(() {
+      _addresses = prefs.getStringList('ff_addresses') ?? _addresses;
+    });
+    _safeInit(() {
+      _defaultAddressIndex =
+          prefs.getInt('ff_defaultAddressIndex') ?? _defaultAddressIndex;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -61,6 +68,48 @@ class FFAppState extends ChangeNotifier {
   void insertAtIndexInPrivateKeys(int index, String value) {
     privateKeys.insert(index, value);
     prefs.setStringList('ff_privateKeys', _privateKeys);
+  }
+
+  List<String> _addresses = [];
+  List<String> get addresses => _addresses;
+  set addresses(List<String> value) {
+    _addresses = value;
+    prefs.setStringList('ff_addresses', value);
+  }
+
+  void addToAddresses(String value) {
+    addresses.add(value);
+    prefs.setStringList('ff_addresses', _addresses);
+  }
+
+  void removeFromAddresses(String value) {
+    addresses.remove(value);
+    prefs.setStringList('ff_addresses', _addresses);
+  }
+
+  void removeAtIndexFromAddresses(int index) {
+    addresses.removeAt(index);
+    prefs.setStringList('ff_addresses', _addresses);
+  }
+
+  void updateAddressesAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    addresses[index] = updateFn(_addresses[index]);
+    prefs.setStringList('ff_addresses', _addresses);
+  }
+
+  void insertAtIndexInAddresses(int index, String value) {
+    addresses.insert(index, value);
+    prefs.setStringList('ff_addresses', _addresses);
+  }
+
+  int _defaultAddressIndex = 0;
+  int get defaultAddressIndex => _defaultAddressIndex;
+  set defaultAddressIndex(int value) {
+    _defaultAddressIndex = value;
+    prefs.setInt('ff_defaultAddressIndex', value);
   }
 }
 

@@ -54,6 +54,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: AdressesPageWidget.routeName,
           path: AdressesPageWidget.routePath,
           builder: (context, params) => AdressesPageWidget(),
+        ),
+        FFRoute(
+          name: SignMessagePageWidget.routeName,
+          path: SignMessagePageWidget.routePath,
+          builder: (context, params) => SignMessagePageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

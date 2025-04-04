@@ -17,3 +17,9 @@ int? getIndex(
   // return the index of value in the list of given values
   return values.indexOf(value);
 }
+
+/// convert string to JSON
+dynamic toJSON(String value) {
+  // convert string to JSON
+  return json.decode(value);
+}

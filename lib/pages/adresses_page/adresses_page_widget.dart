@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'adresses_page_model.dart';
 export 'adresses_page_model.dart';
 
@@ -81,77 +82,223 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          FFButtonWidget(
-                            onPressed: () async {
-                              _model.qRScan =
-                                  await FlutterBarcodeScanner.scanBarcode(
-                                '#C62828', // scanning line color
-                                'Cancel', // cancel button text
-                                true, // whether to show the flash icon
-                                ScanMode.QR,
-                              );
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            FFButtonWidget(
+                              onPressed: () async {
+                                _model.qRScan =
+                                    await FlutterBarcodeScanner.scanBarcode(
+                                  '#C62828', // scanning line color
+                                  'Cancel', // cancel button text
+                                  true, // whether to show the flash icon
+                                  ScanMode.QR,
+                                );
 
-                              safeSetState(() {
-                                _model.wIFKeyTextFieldTextController?.text =
-                                    _model.qRScan;
-                                _model.wIFKeyTextFieldFocusNode?.requestFocus();
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  _model.wIFKeyTextFieldTextController
-                                          ?.selection =
-                                      const TextSelection.collapsed(offset: 0);
+                                safeSetState(() {
+                                  _model.wIFKeyTextFieldTextController?.text =
+                                      _model.qRScan;
+                                  _model.wIFKeyTextFieldFocusNode
+                                      ?.requestFocus();
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    _model.wIFKeyTextFieldTextController
+                                            ?.selection =
+                                        const TextSelection.collapsed(
+                                            offset: 0);
+                                  });
                                 });
-                              });
 
-                              safeSetState(() {});
-                            },
-                            text: 'Scan QR',
-                            icon: Icon(
-                              Icons.qr_code_2_sharp,
-                              size: 35.0,
+                                safeSetState(() {});
+                              },
+                              text: 'Scan QR',
+                              icon: Icon(
+                                Icons.qr_code_2_sharp,
+                                size: 35.0,
+                              ),
+                              options: FFButtonOptions(
+                                height: 40.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Inter',
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                    ),
+                                elevation: 0.0,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
                             ),
-                            options: FFButtonOptions(
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 16.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
+                            FFButtonWidget(
+                              onPressed: () async {
+                                _model.randomKey = await actions.getRandomKey();
+                                safeSetState(() {
+                                  _model.wIFKeyTextFieldTextController?.text =
+                                      _model.randomKey!;
+                                });
+
+                                safeSetState(() {});
+                              },
+                              text: 'Random key',
+                              icon: Icon(
+                                Icons.shuffle,
+                                size: 35.0,
+                              ),
+                              options: FFButtonOptions(
+                                height: 40.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Inter',
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                    ),
+                                elevation: 0.0,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          width: 200.0,
+                          child: TextFormField(
+                            controller: _model.wIFKeyTextFieldTextController,
+                            focusNode: _model.wIFKeyTextFieldFocusNode,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              '_model.wIFKeyTextFieldTextController',
+                              Duration(milliseconds: 2000),
+                              () async {
+                                safeSetState(() {});
+                              },
+                            ),
+                            autofocus: false,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              labelText: 'Bitcoin private key (WIF format)',
+                              labelStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
                                   .override(
                                     fontFamily: 'Inter',
-                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                   ),
-                              elevation: 0.0,
-                              borderRadius: BorderRadius.circular(8.0),
+                              hintText: 'TextField',
+                              hintStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Inter',
+                                    letterSpacing: 0.0,
+                                  ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: FlutterFlowTheme.of(context).error,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: FlutterFlowTheme.of(context).error,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
                             ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Inter',
+                                  letterSpacing: 0.0,
+                                ),
+                            cursorColor:
+                                FlutterFlowTheme.of(context).primaryText,
+                            validator: _model
+                                .wIFKeyTextFieldTextControllerValidator
+                                .asValidator(context),
                           ),
+                        ),
+                        if ((String var1) {
+                          return var1 != '';
+                        }(_model.wIFKeyTextFieldTextController.text))
                           FFButtonWidget(
                             onPressed: () async {
-                              _model.randomKey = await actions.getRandomKey();
-                              safeSetState(() {
-                                _model.wIFKeyTextFieldTextController?.text =
-                                    _model.randomKey!;
-                              });
+                              if (FFAppState().privateKeys.contains(_model
+                                      .wIFKeyTextFieldTextController.text) ==
+                                  false) {
+                                FFAppState().addToPrivateKeys(
+                                    _model.wIFKeyTextFieldTextController.text);
+                                await actions.calculateAllAddresses();
+                                safeSetState(() {
+                                  _model.wIFKeyTextFieldTextController?.clear();
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Private key added successfully.',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).success,
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Private key already exists.',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).error,
+                                  ),
+                                );
+                              }
 
                               safeSetState(() {});
                             },
-                            text: 'Random key',
-                            icon: Icon(
-                              Icons.shuffle,
-                              size: 35.0,
-                            ),
+                            text: 'Add key',
                             options: FFButtonOptions(
                               height: 40.0,
                               padding: EdgeInsetsDirectional.fromSTEB(
@@ -170,149 +317,7 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        width: 200.0,
-                        child: TextFormField(
-                          controller: _model.wIFKeyTextFieldTextController,
-                          focusNode: _model.wIFKeyTextFieldFocusNode,
-                          onChanged: (_) => EasyDebounce.debounce(
-                            '_model.wIFKeyTextFieldTextController',
-                            Duration(milliseconds: 2000),
-                            () async {
-                              safeSetState(() {});
-                            },
-                          ),
-                          autofocus: false,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            labelText: 'Bitcoin private key (WIF format)',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Inter',
-                                  letterSpacing: 0.0,
-                                ),
-                            hintText: 'TextField',
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Inter',
-                                  letterSpacing: 0.0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
-                                    letterSpacing: 0.0,
-                                  ),
-                          cursorColor: FlutterFlowTheme.of(context).primaryText,
-                          validator: _model
-                              .wIFKeyTextFieldTextControllerValidator
-                              .asValidator(context),
-                        ),
-                      ),
-                      if ((String var1) {
-                        return var1 != '';
-                      }(_model.wIFKeyTextFieldTextController.text))
-                        FFButtonWidget(
-                          onPressed: () async {
-                            if (FFAppState().privateKeys.contains(_model
-                                    .wIFKeyTextFieldTextController.text) ==
-                                false) {
-                              FFAppState().addToPrivateKeys(
-                                  _model.wIFKeyTextFieldTextController.text);
-                              await actions.calculateAllAddresses();
-                              safeSetState(() {
-                                _model.wIFKeyTextFieldTextController?.clear();
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Private key added successfully.',
-                                    style: TextStyle(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                    ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor:
-                                      FlutterFlowTheme.of(context).success,
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Private key already exists.',
-                                    style: TextStyle(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                    ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor:
-                                      FlutterFlowTheme.of(context).error,
-                                ),
-                              );
-                            }
-
-                            safeSetState(() {});
-                          },
-                          text: 'Add key',
-                          options: FFButtonOptions(
-                            height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 16.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Inter',
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                ),
-                            elevation: 0.0,
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      SingleChildScrollView(
-                        child: Column(
+                        Column(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -368,13 +373,141 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                                 horizontalAlignment: WrapAlignment.start,
                                 verticalAlignment: WrapCrossAlignment.start,
                               ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Builder(
+                                  builder: (context) => Padding(
+                                    padding: EdgeInsets.all(24.0),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        await Share.share(
+                                          FFAppState()
+                                              .privateKeys
+                                              .elementAtOrNull(FFAppState()
+                                                  .defaultAddressIndex)!,
+                                          sharePositionOrigin:
+                                              getWidgetBoundingBox(context),
+                                        );
+                                      },
+                                      text: 'Export key',
+                                      icon: Icon(
+                                        Icons.share,
+                                        size: 15.0,
+                                      ),
+                                      options: FFButtonOptions(
+                                        height: 40.0,
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            16.0, 0.0, 16.0, 0.0),
+                                        iconPadding:
+                                            EdgeInsetsDirectional.fromSTEB(
+                                                0.0, 0.0, 0.0, 0.0),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              color: Colors.white,
+                                              letterSpacing: 0.0,
+                                            ),
+                                        elevation: 0.0,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                FFButtonWidget(
+                                  onPressed: () async {
+                                    var confirmDialogResponse =
+                                        await showDialog<bool>(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Delete private key?'),
+                                                  content: Text(
+                                                      'Are you sure you want to delete the private key for address: ${_model.defaultAddressRadioButtonValue}'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              false),
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              true),
+                                                      child: Text('Confirm'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false;
+                                    if (confirmDialogResponse) {
+                                      FFAppState().removeAtIndexFromPrivateKeys(
+                                          FFAppState().defaultAddressIndex);
+                                      FFAppState().defaultAddressIndex = 0;
+                                      await actions.calculateAllAddresses();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Private key deleted',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    }
+
+                                    safeSetState(() {});
+                                  },
+                                  text: 'Delete key',
+                                  icon: Icon(
+                                    Icons.delete_forever,
+                                    size: 15.0,
+                                  ),
+                                  options: FFButtonOptions(
+                                    height: 40.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Inter',
+                                          color: Colors.white,
+                                          letterSpacing: 0.0,
+                                        ),
+                                    elevation: 0.0,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ),
-                    ]
-                        .divide(SizedBox(height: 24.0))
-                        .addToStart(SizedBox(height: 24.0))
-                        .addToEnd(SizedBox(height: 24.0)),
+                      ]
+                          .divide(SizedBox(height: 24.0))
+                          .addToStart(SizedBox(height: 24.0))
+                          .addToEnd(SizedBox(height: 24.0)),
+                    ),
                   ),
                 ),
               ),

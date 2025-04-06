@@ -197,6 +197,8 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                                   .labelMedium
                                   .override(
                                     fontFamily: 'Inter',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
                                     letterSpacing: 0.0,
                                   ),
                               hintText: 'TextField',
@@ -204,6 +206,8 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                                   .labelMedium
                                   .override(
                                     fontFamily: 'Inter',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
                                     letterSpacing: 0.0,
                                   ),
                               enabledBorder: OutlineInputBorder(
@@ -242,6 +246,8 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Inter',
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
                                   letterSpacing: 0.0,
                                 ),
                             cursorColor:

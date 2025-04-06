@@ -358,7 +358,7 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                                 )),
                                 optionHeight: 32.0,
                                 textStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
+                                    .bodyMedium
                                     .override(
                                       fontFamily: 'Inter',
                                       letterSpacing: 0.0,
@@ -374,7 +374,7 @@ class _AdressesPageWidgetState extends State<AdressesPageWidget> {
                                 radioButtonColor:
                                     FlutterFlowTheme.of(context).primary,
                                 inactiveRadioButtonColor:
-                                    FlutterFlowTheme.of(context).secondaryText,
+                                    FlutterFlowTheme.of(context).primaryText,
                                 toggleable: false,
                                 horizontalAlignment: WrapAlignment.start,
                                 verticalAlignment: WrapCrossAlignment.start,

@@ -64,6 +64,31 @@ class _SignMessagePageWidgetState extends State<SignMessagePageWidget> {
         'no addr',
       );
       safeSetState(() {});
+      if ((_model.addr != 'no addr') &&
+          (FFAppState().addresses.contains(_model.addr) == false)) {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Unknown address'),
+              content: Text(
+                  'Could not find the private key for address: ${_model.addr}'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        if (FFAppState().addresses.contains(_model.addr)) {
+          safeSetState(() {
+            _model.selectedAddressDropDownValueController?.value = _model.addr;
+          });
+        }
+      }
     });
   }
 
@@ -273,30 +298,6 @@ class _SignMessagePageWidgetState extends State<SignMessagePageWidget> {
                       ),
                     ),
                   ],
-                ),
-                Text(
-                  valueOrDefault<String>(
-                    _model.data?.toString(),
-                    'no data',
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Inter',
-                        letterSpacing: 0.0,
-                      ),
-                ),
-                Text(
-                  _model.url,
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Inter',
-                        letterSpacing: 0.0,
-                      ),
-                ),
-                Text(
-                  _model.addr,
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Inter',
-                        letterSpacing: 0.0,
-                      ),
                 ),
               ]
                   .divide(SizedBox(height: 24.0))

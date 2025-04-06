@@ -13,7 +13,7 @@ import 'package:dartsv/src/message.dart';
 import 'package:dartsv/src/privatekey.dart';
 import 'package:dartsv/src/networks.dart';
 
-Future signMessageAndPost(
+Future<String> signMessageAndPost(
   String msg,
   String url,
   String addr,
@@ -43,10 +43,12 @@ Future signMessageAndPost(
     var parsedJson = json.decode(body);
 
     if (parsedJson is Map && parsedJson.containsKey('error') == true) {
-      print(parsedJson['error']);
+      return parsedJson['error'];
     } else {
-      print('success');
+      return 'Message signed successfully';
     }
+  } else {
+    return 'Error ' + statusCode.toString() + ': ' + body;
   }
 }
 

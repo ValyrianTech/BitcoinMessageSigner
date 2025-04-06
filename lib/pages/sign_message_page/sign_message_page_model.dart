@@ -21,6 +21,8 @@ class SignMessagePageModel extends FlutterFlowModel<SignMessagePageWidget> {
   // State field(s) for SelectedAddressDropDown widget.
   String? selectedAddressDropDownValue;
   FormFieldController<String>? selectedAddressDropDownValueController;
+  // Stores action output result for [Custom Action - signMessageAndPost] action in SignIcon widget.
+  String? apiResponse;
 
   @override
   void initState(BuildContext context) {}

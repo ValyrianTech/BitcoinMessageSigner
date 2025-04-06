@@ -175,11 +175,14 @@ class _SignMessagePageWidgetState extends State<SignMessagePageWidget> {
                         child: Text(
                           _model.msg,
                           textAlign: TextAlign.center,
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
-                                    letterSpacing: 0.0,
-                                  ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                                fontFamily: 'Inter',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                              ),
                         ),
                       ),
                     ),
@@ -238,11 +241,29 @@ class _SignMessagePageWidgetState extends State<SignMessagePageWidget> {
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          await actions.signMessageAndPost(
+                          _model.apiResponse = await actions.signMessageAndPost(
                             _model.msg,
                             _model.url,
                             _model.selectedAddressDropDownValue!,
                           );
+                          await showDialog(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text('Response'),
+                                content: Text(_model.apiResponse!),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext),
+                                    child: Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          safeSetState(() {});
                         },
                         child: Icon(
                           Icons.check_circle,

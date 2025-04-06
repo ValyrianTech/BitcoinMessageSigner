@@ -5,16 +5,24 @@ Built with simplicity, transparency, and privacy in mind — no servers, no trac
 
 ## 📦 Download
 You can download the latest release APK here:
+
 📁 apk/BitcoinMessageSigner.apk
 
 ## 🔐 Features
 📱 Scan QR codes to sign messages with a selected Bitcoin private key
+
 🔑 Securely store multiple WIF-format Bitcoin private keys
+
 ➕ Import keys via QR, manual input, or generate random ones
+
 ✅ Select which key/address to use per message
+
 📤 Automatically send the signature to a webhook of your choice
+
 💡 Open-source and transparent under the MIT License
+
 🚫 No servers. No tracking. No nonsense.
+
 
 ## 🧾 QR Code Format
 To sign a message, the app expects a QR code (or JSON string) with the following fields:
@@ -48,9 +56,9 @@ After signing, the app will send a POST request to the specified url with the fo
 ## 📱 Screenshots
 Here’s how the app looks in light mode:
 
-![Light Theme Screenshot](screenshots/lighttheme.png)
+![Light Theme Screenshot](lighttheme.png)
 
-## 🧑‍💻 Build Instructions
+## ‍💻 Build Instructions
 This app was built using FlutterFlow and can be exported and modified using the Flutter SDK.
 All code is available in the 'flutterflow' branch of this repository.
 

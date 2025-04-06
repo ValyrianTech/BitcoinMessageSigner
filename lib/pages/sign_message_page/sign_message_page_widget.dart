@@ -237,7 +237,7 @@ class _SignMessagePageWidgetState extends State<SignMessagePageWidget> {
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          context.pushNamed(HomePageWidget.routeName);
+                          context.goNamed(HomePageWidget.routeName);
                         },
                         child: Icon(
                           Icons.cancel,
@@ -287,6 +287,8 @@ class _SignMessagePageWidgetState extends State<SignMessagePageWidget> {
                               );
                             },
                           );
+
+                          context.goNamed(HomePageWidget.routeName);
 
                           safeSetState(() {});
                         },

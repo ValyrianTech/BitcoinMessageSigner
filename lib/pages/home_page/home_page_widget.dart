@@ -197,7 +197,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                padding: EdgeInsets.all(24.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,

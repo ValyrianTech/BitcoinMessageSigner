@@ -6,7 +6,7 @@ Built with simplicity, transparency, and privacy in mind — no servers, no trac
 ## 📦 Download
 You can download the latest release APK here:
 
-📁 apk/BitcoinMessageSigner.apk
+📁 ![BitcoinMessageSigner.apk](apk/BitcoinMessageSigner.apk)
 
 ## 🔐 Features
 📱 Scan QR codes to sign messages with a selected Bitcoin private key
@@ -66,5 +66,4 @@ All code is available in the 'flutterflow' branch of this repository.
 MIT License. See the full [MIT License](LICENSE) for more details.
 
 ## 🚀 Brought to you by
-Valyrian Tech
-🔗 https://linktr.ee/ValyrianTech
+🔗 ![Valyrian Tech](https://linktr.ee/ValyrianTech)

@@ -23,12 +23,7 @@ Future<String> signMessageAndPost(
   String wifKey = FFAppState().privateKeys[key_index];
 
   var signature = signMessage(msg, wifKey);
-  var signedMessage = {
-    'address': addr,
-    'message': msg,
-    'data': msg,
-    'signature': signature
-  };
+  var signedMessage = {'address': addr, 'message': msg, 'signature': signature};
 
   Map<String, String> headers = {"Content-type": "application/json"};
 

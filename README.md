@@ -62,6 +62,10 @@ Here’s how the app looks in light mode:
 This app was built using FlutterFlow and can be exported and modified using the Flutter SDK.
 All code is available in the 'flutterflow' branch of this repository.
 
+## 🛠️ Applications
+Here are some applications that are using this app:
+[Hivemind Protocol](https://github.com/ValyrianTech/hivemind-python): A decentralized Condorcet ranked choice voting system that uses Bitcoin signatures to verify votes and stores the data on IPFS.
+
 ## 🧪 License
 MIT License. See the full [MIT License](LICENSE) for more details.
 
